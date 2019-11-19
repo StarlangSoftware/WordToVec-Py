@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='WordToVec',
+    name='NlpToolkit-WordToVec',
     version='1.0.0',
     packages=['WordToVec'],
     url='https://github.com/olcaytaner/WordToVec-Py',
