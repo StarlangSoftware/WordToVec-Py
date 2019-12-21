@@ -3,10 +3,10 @@ from Dictionary.Word import Word
 
 class VocabularyWord(Word):
 
-    __count : int
-    __code : list
-    __point : list
-    __codeLength : int
+    __count: int
+    __code: list
+    __point: list
+    __codeLength: int
     MAX_CODE_LENGTH = 40
 
     """
@@ -23,8 +23,8 @@ class VocabularyWord(Word):
     def __init__(self, name: str, count: int):
         super().__init__(name)
         self.__count = count
-        code = []
-        point = []
+        __code = []
+        __point = []
         self.__codeLength = 0
 
     def __lt__(self, other) -> bool:

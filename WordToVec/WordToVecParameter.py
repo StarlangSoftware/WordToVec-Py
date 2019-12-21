@@ -1,12 +1,12 @@
 class WordToVecParameter:
 
     __layerSize: int
-    __cbow : bool
-    __alpha : float
-    __window : int
-    __hierarchicalSoftMax : bool
-    __negativeSamplingSize : int
-    __numberOfIterations : int
+    __cbow: bool
+    __alpha: float
+    __window: int
+    __hierarchicalSoftMax: bool
+    __negativeSamplingSize: int
+    __numberOfIterations: int
 
     """
     Empty constructor for Word2Vec parameter

@@ -91,7 +91,9 @@ class Iteration:
         if self.__wordCount - self.__lastWordCount > 10000:
             self.__wordCountActual += self.__wordCount - self.__lastWordCount
             self.__lastWordCount = self.__wordCount
-            self.__alpha = self.__startingAlpha * (1 - self.__wordCountActual / (self.__wordToVecParameter.getNumberOfIterations() * self.__corpus.numberOfWords() + 1.0))
+            self.__alpha = self.__startingAlpha * (1 - self.__wordCountActual /
+                                                   (self.__wordToVecParameter.getNumberOfIterations() *
+                                                    self.__corpus.numberOfWords() + 1.0))
             if self.__alpha < self.__startingAlpha * 0.0001:
                 self.__alpha = self.__startingAlpha * 0.0001
 
