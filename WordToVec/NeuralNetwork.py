@@ -23,77 +23,73 @@ class NeuralNetwork:
     EXP_TABLE_SIZE = 1000
     MAX_EXP = 6
 
-    """
-    Constructor for the NeuralNetwork class. Gets corpus and network parameters as input and sets the
-    corresponding parameters first. After that, initializes the network with random weights between -0.5 and 0.5.
-    Constructs vector update matrix and prepares the exp table.
-    
-    PARAMETERS
-    ----------
-    corpus : Corpus
-        Corpus used to train word vectors using Word2Vec algorithm.
-    parameter : WordToVecParameter
-        Parameters of the Word2Vec algorithm.
-    """
-
     def __init__(self, corpus: Corpus, parameter: WordToVecParameter):
+        """
+        Constructor for the NeuralNetwork class. Gets corpus and network parameters as input and sets the
+        corresponding parameters first. After that, initializes the network with random weights between -0.5 and 0.5.
+        Constructs vector update matrix and prepares the exp table.
+
+        PARAMETERS
+        ----------
+        corpus : Corpus
+            Corpus used to train word vectors using Word2Vec algorithm.
+        parameter : WordToVecParameter
+            Parameters of the Word2Vec algorithm.
+        """
         self.__vocabulary = Vocabulary(corpus)
         self.__parameter = parameter
         self.__corpus = corpus
         self.__wordVectors = Matrix(self.__vocabulary.size(), self.__parameter.getLayerSize(), -0.5, 0.5)
         self.__wordVectorUpdate = Matrix(self.__vocabulary.size(), self.__parameter.getLayerSize())
-        self.prepareExpTable()
+        self.__prepareExpTable()
 
-    """
-    Constructs the fast exponentiation table. Instead of taking exponent at each time, the algorithm will lookup
-    the table.
-    """
-
-    def prepareExpTable(self):
+    def __prepareExpTable(self):
+        """
+        Constructs the fast exponentiation table. Instead of taking exponent at each time, the algorithm will lookup
+        the table.
+        """
         self.__expTable = [0.0] * (NeuralNetwork.EXP_TABLE_SIZE + 1)
         for i in range(NeuralNetwork.EXP_TABLE_SIZE):
             self.__expTable[i] = math.exp((i / (NeuralNetwork.EXP_TABLE_SIZE + 0.0) * 2 - 1) * NeuralNetwork.MAX_EXP)
             self.__expTable[i] = self.__expTable[i] / (self.__expTable[i] + 1)
 
-    """
-    Main method for training the Word2Vec algorithm. Depending on the training parameter, CBox or SkipGram algorithm
-    is applied.
-    
-    RETURNS
-    -------
-    VectorizedDictionary
-        Dictionary of word vectors.
-    """
-
     def train(self) -> VectorizedDictionary:
+        """
+        Main method for training the Word2Vec algorithm. Depending on the training parameter, CBox or SkipGram algorithm
+        is applied.
+
+        RETURNS
+        -------
+        VectorizedDictionary
+            Dictionary of word vectors.
+        """
         result = VectorizedDictionary()
         if self.__parameter.isCbow():
-            self.trainCbow()
+            self.__trainCbow()
         else:
-            self.trainSkipGram()
+            self.__trainSkipGram()
         for i in range(self.__vocabulary.size()):
             result.addWord(VectorizedWord(self.__vocabulary.getWord(i).getName(), self.__wordVectors.getRowVector(i)))
         return result
 
-    """
-    Calculates G value in the Word2Vec algorithm.
+    def __calculateG(self, f: float, alpha: float, label: float) -> float:
+        """
+        Calculates G value in the Word2Vec algorithm.
 
-    PARAMETERS
-    ----------
-    f : float
-        F value.
-    alpha : float
-        Learning rate alpha.
-    label : float
-        Label of the instance.
-        
-    RETURNS
-    -------
-    float
-        Calculated G value.
-    """
+        PARAMETERS
+        ----------
+        f : float
+            F value.
+        alpha : float
+            Learning rate alpha.
+        label : float
+            Label of the instance.
 
-    def calculateG(self, f: float, alpha: float, label: float) -> float:
+        RETURNS
+        -------
+        float
+            Calculated G value.
+        """
         if f > NeuralNetwork.MAX_EXP:
             return (label - 1) * alpha
         elif f < -NeuralNetwork.MAX_EXP:
@@ -102,11 +98,10 @@ class NeuralNetwork:
             return (label - self.__expTable[int((f + NeuralNetwork.MAX_EXP) *
                                                 (NeuralNetwork.EXP_TABLE_SIZE // NeuralNetwork.MAX_EXP // 2))]) * alpha
 
-    """
-    Main method for training the CBow version of Word2Vec algorithm.
-    """
-
-    def trainCbow(self):
+    def __trainCbow(self):
+        """
+        Main method for training the CBow version of Word2Vec algorithm.
+        """
         iteration = Iteration(self.__corpus, self.__parameter)
         currentSentence = self.__corpus.getSentence(iteration.getSentenceIndex())
         outputs = Vector()
@@ -156,7 +151,7 @@ class NeuralNetwork:
                             label = 0
                         l2 = target
                         f = outputs.dotProduct(self.__wordVectorUpdate.getRowVector(l2))
-                        g = self.calculateG(f, iteration.getAlpha(), label)
+                        g = self.__calculateG(f, iteration.getAlpha(), label)
                         outputUpdate.addVector(self.__wordVectorUpdate.getRowVector(l2).product(g))
                         self.__wordVectorUpdate.addRowVector(l2, outputs.product(g))
                 for a in range(b, self.__parameter.getWindow() * 2 + 1 - b):
@@ -166,11 +161,10 @@ class NeuralNetwork:
                         self.__wordVectors.addRowVector(lastWordIndex, outputUpdate)
             currentSentence = iteration.sentenceUpdate(currentSentence)
 
-    """
-    Main method for training the SkipGram version of Word2Vec algorithm.
-    """
-
-    def trainSkipGram(self):
+    def __trainSkipGram(self):
+        """
+        Main method for training the SkipGram version of Word2Vec algorithm.
+        """
         iteration = Iteration(self.__corpus, self.__parameter)
         currentSentence = self.__corpus.getSentence(iteration.getSentenceIndex())
         outputs = Vector()
@@ -217,7 +211,7 @@ class NeuralNetwork:
                                 label = 0
                             l2 = target
                             f = self.__wordVectors.getRowVector(l1).dotProduct(self.__wordVectorUpdate.getRowVector(l2))
-                            g = self.calculateG(f, iteration.getAlpha(), label)
+                            g = self.__calculateG(f, iteration.getAlpha(), label)
                             outputUpdate.addVector(self.__wordVectorUpdate.getRowVector(l2).product(g))
                             self.__wordVectorUpdate.addRowVector(l2, self.__wordVectors.getRowVector(l1).product(g))
                     self.__wordVectors.addRowVector(l1, outputUpdate)

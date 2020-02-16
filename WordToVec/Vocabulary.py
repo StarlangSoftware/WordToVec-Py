@@ -14,73 +14,73 @@ class Vocabulary:
     def wordComparator(self, word: VocabularyWord):
         return word.getName()
 
-    """
-    Constructor for the Vocabulary class. For each distinct word in the corpus, a VocabularyWord
-    instance is created. After that, words are sorted according to their occurrences. Unigram table is constructed,
-    where after Huffman tree is created based on the number of occurrences of the words.
-
-    PARAMETERS
-    ----------
-    corpus : Corpus
-        Corpus used to train word vectors using Word2Vec algorithm.
-    """
     def __init__(self, corpus: Corpus):
+        """
+        Constructor for the Vocabulary class. For each distinct word in the corpus, a VocabularyWord
+        instance is created. After that, words are sorted according to their occurrences. Unigram table is constructed,
+        where after Huffman tree is created based on the number of occurrences of the words.
+
+        PARAMETERS
+        ----------
+        corpus : Corpus
+            Corpus used to train word vectors using Word2Vec algorithm.
+        """
         wordList = corpus.getWordList()
         self.__vocabulary = []
         for word in wordList:
             self.__vocabulary.append(VocabularyWord(word.getName(), corpus.getCount(word)))
         self.__vocabulary.sort()
-        self.createUniGramTable()
-        self.constructHuffmanTree()
+        self.__createUniGramTable()
+        self.__constructHuffmanTree()
         self.__vocabulary.sort(key=self.wordComparator)
 
-    """
-    Returns number of words in the vocabulary.
-
-    RETURNS
-    -------
-    int
-        Number of words in the vocabulary.
-    """
     def size(self) -> int:
+        """
+        Returns number of words in the vocabulary.
+
+        RETURNS
+        -------
+        int
+            Number of words in the vocabulary.
+        """
         return len(self.__vocabulary)
 
-    """
-    Searches a word and returns the position of that word in the vocabulary. Search is done using binary search.
-
-    PARAMETERS
-    ----------
-    word : Word
-        Word to be searched.
-        
-    RETURNS
-    -------
-    int
-     * @return Position of the word searched.
-    """
     def getPosition(self, word: Word) -> int:
+        """
+        Searches a word and returns the position of that word in the vocabulary. Search is done using binary search.
+
+        PARAMETERS
+        ----------
+        word : Word
+            Word to be searched.
+
+        RETURNS
+        -------
+        int
+         * @return Position of the word searched.
+        """
         return bisect_left(self.__vocabulary, word)
 
-    """
-    Returns the word at a given index.
-    
-    PARAMETERS
-    ----------
-    index : int
-        Index of the word.
-        
-    RETURNS
-    -------
-    VocabularyWord
-        The word at a given index.
-    """
     def getWord(self, index: int) -> VocabularyWord:
+        """
+        Returns the word at a given index.
+
+        PARAMETERS
+        ----------
+        index : int
+            Index of the word.
+
+        RETURNS
+        -------
+        VocabularyWord
+            The word at a given index.
+        """
         return self.__vocabulary[index]
 
-    """
-    Constructs Huffman Tree based on the number of occurences of the words.
-    """
-    def constructHuffmanTree(self):
+    def __constructHuffmanTree(self):
+        """
+        Constructs Huffman Tree based on the number of occurences of the words.
+        """
         count = [0] * (len(self.__vocabulary) * 2 + 1)
         code = [0] * VocabularyWord.MAX_CODE_LENGTH
         point = [0] * VocabularyWord.MAX_CODE_LENGTH
@@ -133,10 +133,10 @@ class Vocabulary:
                 self.__vocabulary[a].setCode(i - b - 1, code[b])
                 self.__vocabulary[a].setPoint(i - b, point[b] - len(self.__vocabulary))
 
-    """
-    Constructs the unigram table based on the number of occurences of the words.
-    """
-    def createUniGramTable(self):
+    def __createUniGramTable(self):
+        """
+        Constructs the unigram table based on the number of occurences of the words.
+        """
         total = 0
         self.__table = [0] * (2 * len(self.__vocabulary))
         for vocabularyWord in self.__vocabulary:
@@ -151,29 +151,29 @@ class Vocabulary:
             if i >= len(self.__vocabulary):
                 i = len(self.__vocabulary) - 1
 
-    """
-    Accessor for the unigram table.
-
-    PARAMETERS
-    ----------
-    index : int
-        Index of the word.
-        
-    RETURNS
-    -------
-    int
-        Unigram table value at a given index.
-    """
     def getTableValue(self, index: int) -> int:
+        """
+        Accessor for the unigram table.
+
+        PARAMETERS
+        ----------
+        index : int
+            Index of the word.
+
+        RETURNS
+        -------
+        int
+            Unigram table value at a given index.
+        """
         return self.__table[index]
 
-    """
-    Returns size of the unigram table.
-    
-    RETURNS
-    -------
-    int
-        Size of the unigram table.
-    """
     def getTableSize(self) -> int:
+        """
+        Returns size of the unigram table.
+
+        RETURNS
+        -------
+        int
+            Size of the unigram table.
+        """
         return len(self.__table)
