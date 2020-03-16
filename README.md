@@ -62,8 +62,8 @@ Detailed Description
 
 Yapay sinir ağını initialize etmek için
 
-	NeuralNetwork(Corpus corpus, WordToVecParameter parameter)
+	NeuralNetwork(self, corpus: Corpus, parameter: WordToVecParameter)
 
 Sinir ağını eğitmek için ise
 
-	VectorizedDictionary train()
+	train(self) -> VectorizedDictionary
