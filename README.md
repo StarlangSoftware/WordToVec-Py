@@ -10,8 +10,9 @@ SkipGram is a prediction based distributional semantic model (DSM) consisting of
 
 For Developers
 ============
-You can also see either [Java](https://github.com/olcaytaner/WordToVec) 
-or [C++](https://github.com/olcaytaner/WordToVec-CPP) repository.
+You can also see [Java](https://github.com/olcaytaner/WordToVec), [C++](https://github.com/olcaytaner/WordToVec-CPP),
+or [C#](https://github.com/olcaytaner/WordToVec-CS) repository.
+
 ## Requirements
 
 * [Python 3.7 or higher](#python)
