@@ -39,7 +39,7 @@ Use Git for cloning the code to your local or below line for Ubuntu:
 
 A directory called WordToVec will be created. Or you can use below link for exploring the code:
 
-	git clone https://github.com/olcaytaner/WordToVec-Py.git
+	git clone https://github.com/starlangsoftware/WordToVec-Py.git
 
 ## Open project with Pycharm IDE
 
@@ -50,13 +50,6 @@ Steps for opening the cloned project:
 * Choose `WordToVec-Py` file
 * Select open as project option
 * Couple of seconds, dependencies will be downloaded. 
-
-
-## Compile
-
-**From IDE**
-
-After being done with the downloading and Maven indexing, select **Build Project** option from **Build** menu. After compilation process, user can run WordToVec-Py.
 
 Detailed Description
 ============
