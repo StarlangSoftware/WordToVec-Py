@@ -59,7 +59,15 @@ class Vocabulary:
         int
          * @return Position of the word searched.
         """
-        return bisect_left(self.__vocabulary, word)
+        lo = 0
+        hi = len(self.__vocabulary)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if self.__vocabulary[mid].getName() < word.getName():
+                lo = mid + 1
+            else:
+                hi = mid
+        return lo
 
     def getWord(self, index: int) -> VocabularyWord:
         """

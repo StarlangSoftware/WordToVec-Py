@@ -23,8 +23,8 @@ class VocabularyWord(Word):
         """
         super().__init__(name)
         self.__count = count
-        __code = []
-        __point = []
+        self.__code = self.MAX_CODE_LENGTH * [0]
+        self.__point = self.MAX_CODE_LENGTH * [0]
         self.__codeLength = 0
 
     def __lt__(self, other) -> bool:
