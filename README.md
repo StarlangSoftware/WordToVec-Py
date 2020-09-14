@@ -1,7 +1,6 @@
 For Developers
 ============
-You can also see [Java](https://github.com/olcaytaner/WordToVec), [C++](https://github.com/olcaytaner/WordToVec-CPP),
-or [C#](https://github.com/olcaytaner/WordToVec-CS) repository.
+You can also see [Java](https://github.com/olcaytaner/WordToVec), [C++](https://github.com/olcaytaner/WordToVec-CPP), [Swift](https://github.com/olcaytaner/WordToVec-Swift), or [C#](https://github.com/olcaytaner/WordToVec-CS) repository.
 
 ## Requirements
 
