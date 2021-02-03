@@ -1,5 +1,6 @@
 For Developers
 ============
+
 You can also see [Java](https://github.com/starlangsoftware/WordToVec), [C++](https://github.com/starlangsoftware/WordToVec-CPP), [Swift](https://github.com/starlangsoftware/WordToVec-Swift), or [C#](https://github.com/starlangsoftware/WordToVec-CS) repository.
 
 ## Requirements
@@ -39,3 +40,14 @@ Steps for opening the cloned project:
 * Choose `WordToVec-Py` file
 * Select open as project option
 * Couple of seconds, dependencies will be downloaded. 
+
+Detailed Description
+============
+
+To initialize artificial neural network:
+
+	NeuralNetwork(self, corpus: Corpus, parameter: WordToVecParameter)
+
+To train neural network:
+
+	train(self) -> VectorizedDictionary
