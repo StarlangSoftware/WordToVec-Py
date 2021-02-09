@@ -62,3 +62,18 @@ To initialize artificial neural network:
 To train neural network:
 
 	train(self) -> VectorizedDictionary
+
+# Cite
+
+	@inproceedings{ercan-yildiz-2018-anlamver,
+    	title = "{A}nlam{V}er: Semantic Model Evaluation Dataset for {T}urkish - Word Similarity and Relatedness",
+    	author = {Ercan, G{\"o}khan  and
+      	Y{\i}ld{\i}z, Olcay Taner},
+    	booktitle = "Proceedings of the 27th International Conference on Computational Linguistics",
+    	month = aug,
+    	year = "2018",
+    	address = "Santa Fe, New Mexico, USA",
+    	publisher = "Association for Computational Linguistics",
+    	url = "https://www.aclweb.org/anthology/C18-1323",
+    	pages = "3819--3836",
+	}
