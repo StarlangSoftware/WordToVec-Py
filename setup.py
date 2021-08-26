@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='NlpToolkit-WordToVec',
-    version='1.0.3',
+    version='1.0.4',
     packages=['WordToVec'],
     url='https://github.com/StarlangSoftware/WordToVec-Py',
     license='',

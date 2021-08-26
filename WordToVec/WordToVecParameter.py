@@ -7,6 +7,7 @@ class WordToVecParameter:
     __hierarchicalSoftMax: bool
     __negativeSamplingSize: int
     __numberOfIterations: int
+    __seed: int
 
     def __init__(self):
         """
@@ -19,6 +20,7 @@ class WordToVecParameter:
         self.__negativeSamplingSize = 5
         self.__numberOfIterations = 3
         self.__window = 5
+        self.__seed = 1
 
     def getLayerSize(self) -> int:
         """
@@ -97,6 +99,17 @@ class WordToVecParameter:
         """
         return self.__numberOfIterations
 
+    def getSeed(self) -> int:
+        """
+        Accessor for the seed attribute.
+
+        RETURNS
+        -------
+        int
+            Seed to train the network.
+        """
+        return self.__seed
+
     def setLayerSize(self, layerSize: int):
         """
         Mutator for the layerSize attribute.
@@ -173,3 +186,14 @@ class WordToVecParameter:
             New number of iterations.
         """
         self.__numberOfIterations = numberOfIterations
+
+    def setSeed(self, seed: int):
+        """
+        Mutator for the seed attribute.
+
+        PARAMETERS
+        ----------
+        seed : int
+            New seed.
+        """
+        self.__seed = seed

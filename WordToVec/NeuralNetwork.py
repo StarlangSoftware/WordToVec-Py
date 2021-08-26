@@ -39,7 +39,8 @@ class NeuralNetwork:
         self.__vocabulary = Vocabulary(corpus)
         self.__parameter = parameter
         self.__corpus = corpus
-        self.__wordVectors = Matrix(self.__vocabulary.size(), self.__parameter.getLayerSize(), -0.5, 0.5)
+        self.__wordVectors = Matrix(self.__vocabulary.size(), self.__parameter.getLayerSize(), -0.5, 0.5,
+                                    parameter.getSeed())
         self.__wordVectorUpdate = Matrix(self.__vocabulary.size(), self.__parameter.getLayerSize())
         self.__prepareExpTable()
 
@@ -108,7 +109,7 @@ class NeuralNetwork:
         outputs.initAllSame(self.__parameter.getLayerSize(), 0.0)
         outputUpdate = Vector()
         outputUpdate.initAllSame(self.__parameter.getLayerSize(), 0)
-        self.__corpus.shuffleSentences(1)
+        self.__corpus.shuffleSentences(self.__parameter.getSeed())
         while iteration.getIterationCount() < self.__parameter.getNumberOfIterations():
             iteration.alphaUpdate()
             wordIndex = self.__vocabulary.getPosition(currentSentence.getWord(iteration.getSentencePosition()))
@@ -171,7 +172,7 @@ class NeuralNetwork:
         outputs.initAllSame(self.__parameter.getLayerSize(), 0.0)
         outputUpdate = Vector()
         outputUpdate.initAllSame(self.__parameter.getLayerSize(), 0)
-        self.__corpus.shuffleSentences(1)
+        self.__corpus.shuffleSentences(self.__parameter.getSeed())
         while iteration.getIterationCount() < self.__parameter.getNumberOfIterations():
             iteration.alphaUpdate()
             wordIndex = self.__vocabulary.getPosition(currentSentence.getWord(iteration.getSentencePosition()))
