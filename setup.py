@@ -2,11 +2,11 @@ from setuptools import setup
 
 from pathlib import Path
 this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text()
+long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
     name='NlpToolkit-WordToVec',
-    version='1.0.5',
+    version='1.0.6',
     packages=['WordToVec'],
     url='https://github.com/StarlangSoftware/WordToVec-Py',
     license='',
