@@ -9,6 +9,11 @@ Prediction based DR models gained much attention after Mikolov et al.’s neural
 
 SkipGram is a prediction based distributional semantic model (DSM) consisting of a shallow neural network architecture inspired from neural language modeling (LM) intuitions. It is commonly known for its open-source implementation library word2vec. SkipGram acts like a log-linear classifier maximizing the prediction of the surrounding words of a word within a context (center window). Probabilistic word and sentence prediction by local neighbors of a word has been successfully applied on LM tasks under Markov assumption. SkipGram leverages the same idea by considering the words within the window as positive and negative instances and learning weights (for k contexts) which maximizes word predictions. In the training process, each word vector starts as a random vector, and then iteratively shifts to the neighboring vector.
 
+Video Lectures
+============
+
+[<img src=https://github.com/StarlangSoftware/WordToVec/blob/master/video1.jpg width="50%">](https://youtu.be/7zaTW8dH_QMc)
+
 For Developers
 ============
 
