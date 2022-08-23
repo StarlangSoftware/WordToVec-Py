@@ -12,7 +12,7 @@ SkipGram is a prediction based distributional semantic model (DSM) consisting of
 Video Lectures
 ============
 
-[<img src=https://github.com/StarlangSoftware/WordToVec/blob/master/video1.jpg width="50%">](https://youtu.be/7zaTW8dH_QMc)[<img src=https://github.com/StarlangSoftware/WordToVec/blob/master/video2.jpg width="50%">](https://youtu.be/4YvBJ_p8HRc)
+[<img src=https://github.com/StarlangSoftware/WordToVec/blob/master/video1.jpg width="50%">](https://youtu.be/7zaTW8dH_QMc)[<img src=https://github.com/StarlangSoftware/WordToVec/blob/master/video2.jpg width="50%">](https://youtu.be/4YvBJ_p8HRc)[<img src=https://github.com/StarlangSoftware/WordToVec/blob/master/video3.jpg width="50%">](https://youtu.be/Hh-MM_rSWeo)
 
 For Developers
 ============
