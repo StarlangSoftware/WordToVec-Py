@@ -1,12 +1,12 @@
 class WordToVecParameter:
 
-    __layerSize: int
+    __layer_size: int
     __cbow: bool
     __alpha: float
     __window: int
-    __hierarchicalSoftMax: bool
-    __negativeSamplingSize: int
-    __numberOfIterations: int
+    __hierarchical_soft_max: bool
+    __negative_sampling_size: int
+    __number_of_iterations: int
     __seed: int
 
     def __init__(self):
@@ -15,10 +15,10 @@ class WordToVecParameter:
         """
         self.__alpha = 0.025
         self.__cbow = True
-        self.__hierarchicalSoftMax = False
-        self.__layerSize = 100
-        self.__negativeSamplingSize = 5
-        self.__numberOfIterations = 3
+        self.__hierarchical_soft_max = False
+        self.__layer_size = 100
+        self.__negative_sampling_size = 5
+        self.__number_of_iterations = 3
         self.__window = 5
         self.__seed = 1
 
@@ -31,7 +31,7 @@ class WordToVecParameter:
         int
             Size of the word vectors.
         """
-        return self.__layerSize
+        return self.__layer_size
 
     def isCbow(self) -> bool:
         """
@@ -75,7 +75,7 @@ class WordToVecParameter:
         bool
             If hierarchical softmax will be applied, returns true; false otherwise.
         """
-        return self.__hierarchicalSoftMax
+        return self.__hierarchical_soft_max
 
     def getNegativeSamplingSize(self) -> int:
         """
@@ -86,7 +86,7 @@ class WordToVecParameter:
         int
             Number of negative samples that will be withdrawn.
         """
-        return self.__negativeSamplingSize
+        return self.__negative_sampling_size
 
     def getNumberOfIterations(self) -> int:
         """
@@ -97,7 +97,7 @@ class WordToVecParameter:
         int
             Number of epochs to train the network.
         """
-        return self.__numberOfIterations
+        return self.__number_of_iterations
 
     def getSeed(self) -> int:
         """
@@ -119,7 +119,7 @@ class WordToVecParameter:
         layerSize : int
             New size of the word vectors.
         """
-        self.__layerSize = layerSize
+        self.__layer_size = layerSize
 
     def setCbow(self, cbow: bool):
         """
@@ -163,7 +163,7 @@ class WordToVecParameter:
         hierarchicalSoftMax : bool
             True is hierarchical softMax applied; false otherwise.
         """
-        self.__hierarchicalSoftMax = hierarchicalSoftMax
+        self.__hierarchical_soft_max = hierarchicalSoftMax
 
     def setNegativeSamplingSize(self, negativeSamplingSize: int):
         """
@@ -174,7 +174,7 @@ class WordToVecParameter:
         negativeSamplingSize : int
             New number of negative instances that will be withdrawn.
         """
-        self.__negativeSamplingSize = negativeSamplingSize
+        self.__negative_sampling_size = negativeSamplingSize
 
     def setNumberOfIterations(self, numberOfIterations: int):
         """
@@ -185,7 +185,7 @@ class WordToVecParameter:
         numberOfIterations : int
             New number of iterations.
         """
-        self.__numberOfIterations = numberOfIterations
+        self.__number_of_iterations = numberOfIterations
 
     def setSeed(self, seed: int):
         """

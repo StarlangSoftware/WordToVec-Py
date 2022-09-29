@@ -25,9 +25,9 @@ class Vocabulary:
         corpus : Corpus
             Corpus used to train word vectors using Word2Vec algorithm.
         """
-        wordList = corpus.getWordList()
+        word_list = corpus.getWordList()
         self.__vocabulary = []
-        for word in wordList:
+        for word in word_list:
             self.__vocabulary.append(VocabularyWord(word.getName(), corpus.getCount(word)))
         self.__vocabulary.sort()
         self.__createUniGramTable()
@@ -93,7 +93,7 @@ class Vocabulary:
         code = [0] * VocabularyWord.MAX_CODE_LENGTH
         point = [0] * VocabularyWord.MAX_CODE_LENGTH
         binary = [0] * (len(self.__vocabulary) * 2 + 1)
-        parentNode = [0] * (len(self.__vocabulary) * 2 + 1)
+        parent_node = [0] * (len(self.__vocabulary) * 2 + 1)
         for a in range(len(self.__vocabulary)):
             count[a] = self.__vocabulary[a].getCount()
         for a in range(len(self.__vocabulary), len(self.__vocabulary) * 2):
@@ -122,8 +122,8 @@ class Vocabulary:
                 min2i = pos2
                 pos2 = pos2 + 1
             count[len(self.__vocabulary) + a] = count[min1i] + count[min2i]
-            parentNode[min1i] = len(self.__vocabulary) + a
-            parentNode[min2i] = len(self.__vocabulary) + a
+            parent_node[min1i] = len(self.__vocabulary) + a
+            parent_node[min2i] = len(self.__vocabulary) + a
             binary[min2i] = 1
         for a in range(len(self.__vocabulary)):
             b = a
@@ -132,7 +132,7 @@ class Vocabulary:
                 code[i] = binary[b]
                 point[i] = b
                 i = i + 1
-                b = parentNode[b]
+                b = parent_node[b]
                 if b == len(self.__vocabulary) * 2 - 2:
                     break
             self.__vocabulary[a].setCodeLength(i)
@@ -147,8 +147,8 @@ class Vocabulary:
         """
         total = 0
         self.__table = [0] * (2 * len(self.__vocabulary))
-        for vocabularyWord in self.__vocabulary:
-            total += math.pow(vocabularyWord.getCount(), 0.75)
+        for vocabulary_word in self.__vocabulary:
+            total += math.pow(vocabulary_word.getCount(), 0.75)
         i = 0
         d1 = math.pow(self.__vocabulary[i].getCount(), 0.75) / total
         for a in range(2 * len(self.__vocabulary)):
