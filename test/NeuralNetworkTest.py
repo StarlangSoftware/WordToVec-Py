@@ -1,6 +1,7 @@
 import unittest
 
 from Corpus.Corpus import Corpus
+from Corpus.CorpusStream import CorpusStream
 from Dictionary.VectorizedDictionary import VectorizedDictionary
 
 from WordToVec.NeuralNetwork import NeuralNetwork
@@ -9,14 +10,14 @@ from WordToVec.WordToVecParameter import WordToVecParameter
 
 class NeuralNetworkTest(unittest.TestCase):
 
-    turkish : Corpus
-    english : Corpus
+    turkish: CorpusStream
+    english: CorpusStream
 
     def setUp(self) -> None:
-        self.english = Corpus("../english-similarity-dataset.txt")
-        self.turkish = Corpus("../turkish-similarity-dataset.txt")
+        self.english = CorpusStream("../english-similarity-dataset.txt")
+        self.turkish = CorpusStream("../turkish-similarity-dataset.txt")
 
-    def train(self, corpus: Corpus, cBow: bool) -> VectorizedDictionary:
+    def train(self, corpus: CorpusStream, cBow: bool) -> VectorizedDictionary:
         parameter = WordToVecParameter()
         parameter.setCbow(cBow)
         neuralNetwork = NeuralNetwork(corpus, parameter)

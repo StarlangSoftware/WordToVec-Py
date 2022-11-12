@@ -1,4 +1,5 @@
 from Corpus.Corpus import Corpus
+from Corpus.CorpusStream import CorpusStream
 from Dictionary.VectorizedDictionary import VectorizedDictionary
 from Dictionary.VectorizedWord import VectorizedWord
 from Math.Matrix import Matrix
@@ -18,14 +19,14 @@ class NeuralNetwork:
     __word_vector_update: Matrix
     __vocabulary: Vocabulary
     __parameter: WordToVecParameter
-    __corpus: Corpus
+    __corpus: CorpusStream
     __exp_table: list
 
     EXP_TABLE_SIZE = 1000
     MAX_EXP = 6
 
     def __init__(self,
-                 corpus: Corpus,
+                 corpus: CorpusStream,
                  parameter: WordToVecParameter):
         """
         Constructor for the NeuralNetwork class. Gets corpus and network parameters as input and sets the
@@ -113,14 +114,14 @@ class NeuralNetwork:
         Main method for training the CBow version of Word2Vec algorithm.
         """
         iteration = Iteration(self.__corpus, self.__parameter)
-        current_sentence = self.__corpus.getSentence(iteration.getSentenceIndex())
+        self.__corpus.open()
+        current_sentence = self.__corpus.getSentence()
         outputs = Vector()
         outputs.initAllSame(self.__parameter.getLayerSize(), 0.0)
         output_update = Vector()
         output_update.initAllSame(self.__parameter.getLayerSize(), 0)
-        self.__corpus.shuffleSentences(self.__parameter.getSeed())
         while iteration.getIterationCount() < self.__parameter.getNumberOfIterations():
-            iteration.alphaUpdate()
+            iteration.alphaUpdate(self.__vocabulary.getTotalNumberOfWords())
             word_index = self.__vocabulary.getPosition(current_sentence.getWord(iteration.getSentencePosition()))
             current_word = self.__vocabulary.getWord(word_index)
             outputs.clear()
@@ -170,20 +171,21 @@ class NeuralNetwork:
                         last_word_index = self.__vocabulary.getPosition(current_sentence.getWord(c))
                         self.__word_vectors.addRowVector(last_word_index, output_update)
             current_sentence = iteration.sentenceUpdate(current_sentence)
+        self.__corpus.close()
 
     def __trainSkipGram(self):
         """
         Main method for training the SkipGram version of Word2Vec algorithm.
         """
         iteration = Iteration(self.__corpus, self.__parameter)
-        current_sentence = self.__corpus.getSentence(iteration.getSentenceIndex())
+        self.__corpus.open()
+        current_sentence = self.__corpus.getSentence()
         outputs = Vector()
         outputs.initAllSame(self.__parameter.getLayerSize(), 0.0)
         output_update = Vector()
         output_update.initAllSame(self.__parameter.getLayerSize(), 0)
-        self.__corpus.shuffleSentences(self.__parameter.getSeed())
         while iteration.getIterationCount() < self.__parameter.getNumberOfIterations():
-            iteration.alphaUpdate()
+            iteration.alphaUpdate(self.__vocabulary.getTotalNumberOfWords())
             word_index = self.__vocabulary.getPosition(current_sentence.getWord(iteration.getSentencePosition()))
             current_word = self.__vocabulary.getWord(word_index)
             outputs.clear()
@@ -226,3 +228,4 @@ class NeuralNetwork:
                             self.__word_vector_update.addRowVector(l2, self.__word_vectors.getRowVector(l1).product(g))
                     self.__word_vectors.addRowVector(l1, output_update)
             current_sentence = iteration.sentenceUpdate(current_sentence)
+        self.__corpus.close()

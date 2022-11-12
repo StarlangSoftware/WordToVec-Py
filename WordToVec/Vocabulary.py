@@ -1,5 +1,6 @@
-from bisect import bisect_left
 from Corpus.Corpus import Corpus
+from Corpus.CorpusStream import CorpusStream
+from DataStructure.CounterHashMap import CounterHashMap
 from Dictionary.Word import Word
 import math
 
@@ -10,11 +11,12 @@ class Vocabulary:
 
     __vocabulary: list
     __table: list
+    __total_number_of_words: int
 
     def wordComparator(self, word: VocabularyWord):
         return word.getName()
 
-    def __init__(self, corpus: Corpus):
+    def __init__(self, corpus: CorpusStream):
         """
         Constructor for the Vocabulary class. For each distinct word in the corpus, a VocabularyWord
         instance is created. After that, words are sorted according to their occurrences. Unigram table is constructed,
@@ -25,10 +27,19 @@ class Vocabulary:
         corpus : Corpus
             Corpus used to train word vectors using Word2Vec algorithm.
         """
-        word_list = corpus.getWordList()
+        self.__total_number_of_words = 0
+        counts = CounterHashMap()
+        corpus.open()
+        sentence = corpus.getSentence()
+        while sentence is not None:
+            for i in range(sentence.wordCount()):
+                counts.put(sentence.getWord(i).getName())
+            self.__total_number_of_words = self.__total_number_of_words + sentence.wordCount()
+            sentence = corpus.getSentence()
+        corpus.close()
         self.__vocabulary = []
-        for word in word_list:
-            self.__vocabulary.append(VocabularyWord(word.getName(), corpus.getCount(word)))
+        for word in counts.keys():
+            self.__vocabulary.append(VocabularyWord(word, counts.get(word)))
         self.__vocabulary.sort()
         self.__createUniGramTable()
         self.__constructHuffmanTree()
@@ -68,6 +79,9 @@ class Vocabulary:
             else:
                 hi = mid
         return lo
+
+    def getTotalNumberOfWords(self) -> int:
+        return self.__total_number_of_words
 
     def getWord(self, index: int) -> VocabularyWord:
         """

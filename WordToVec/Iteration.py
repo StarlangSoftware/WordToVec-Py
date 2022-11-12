@@ -1,3 +1,5 @@
+from Corpus.CorpusStream import CorpusStream
+
 from Corpus.Corpus import Corpus
 from Corpus.Sentence import Sentence
 
@@ -11,14 +13,13 @@ class Iteration:
     __word_count_actual: int
     __iteration_count: int
     __sentence_position: int
-    __sentence_index: int
     __starting_alpha: float
     __alpha: float
-    __corpus: Corpus
+    __corpus: CorpusStream
     __word_to_vec_parameter: WordToVecParameter
 
     def __init__(self,
-                 corpus: Corpus,
+                 corpus: CorpusStream,
                  wordToVecParameter: WordToVecParameter):
         """
         Constructor for the Iteration class. Get corpus and parameter as input, sets the corresponding
@@ -64,17 +65,6 @@ class Iteration:
         """
         return self.__iteration_count
 
-    def getSentenceIndex(self) -> int:
-        """
-        Accessor for the sentenceIndex attribute.
-
-        RETURNS
-        -------
-        int
-            SentenceIndex attribute
-        """
-        return self.__sentence_index
-
     def getSentencePosition(self) -> int:
         """
         Accessor for the sentencePosition attribute.
@@ -86,7 +76,7 @@ class Iteration:
         """
         return self.__sentence_position
 
-    def alphaUpdate(self):
+    def alphaUpdate(self, totalNumberOfWords: int):
         """
         Updates the alpha parameter after 10000 words has been processed.
         """
@@ -95,7 +85,7 @@ class Iteration:
             self.__last_word_count = self.__word_count
             self.__alpha = self.__starting_alpha * (1 - self.__word_count_actual /
                                                     (self.__word_to_vec_parameter.getNumberOfIterations() *
-                                                     self.__corpus.numberOfWords() + 1.0))
+                                                     totalNumberOfWords + 1.0))
             if self.__alpha < self.__starting_alpha * 0.0001:
                 self.__alpha = self.__starting_alpha * 0.0001
 
@@ -119,13 +109,14 @@ class Iteration:
         self.__sentence_position = self.__sentence_position + 1
         if self.__sentence_position >= currentSentence.wordCount():
             self.__word_count += currentSentence.wordCount()
-            self.__sentence_index = self.__sentence_index + 1
             self.__sentence_position = 0
-            if self.__sentence_index == self.__corpus.sentenceCount():
+            sentence = self.__corpus.getSentence()
+            if sentence is None:
                 self.__iteration_count = self.__iteration_count + 1
                 self.__word_count = 0
                 self.__last_word_count = 0
-                self.__sentence_index = 0
-                self.__corpus.shuffleSentences(1)
-            return self.__corpus.getSentence(self.__sentence_index)
+                self.__corpus.close()
+                self.__corpus.open()
+                sentence = self.__corpus.getSentence()
+            return sentence
         return currentSentence
