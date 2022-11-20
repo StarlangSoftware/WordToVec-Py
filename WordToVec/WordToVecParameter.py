@@ -18,7 +18,7 @@ class WordToVecParameter:
         self.__hierarchical_soft_max = False
         self.__layer_size = 100
         self.__negative_sampling_size = 5
-        self.__number_of_iterations = 3
+        self.__number_of_iterations = 2
         self.__window = 5
         self.__seed = 1
 

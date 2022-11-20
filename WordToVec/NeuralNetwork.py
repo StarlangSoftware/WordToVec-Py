@@ -1,5 +1,5 @@
+from Corpus.AbstractCorpus import AbstractCorpus
 from Corpus.Corpus import Corpus
-from Corpus.CorpusStream import CorpusStream
 from Dictionary.VectorizedDictionary import VectorizedDictionary
 from Dictionary.VectorizedWord import VectorizedWord
 from Math.Matrix import Matrix
@@ -19,14 +19,14 @@ class NeuralNetwork:
     __word_vector_update: Matrix
     __vocabulary: Vocabulary
     __parameter: WordToVecParameter
-    __corpus: CorpusStream
+    __corpus: AbstractCorpus
     __exp_table: list
 
     EXP_TABLE_SIZE = 1000
     MAX_EXP = 6
 
     def __init__(self,
-                 corpus: CorpusStream,
+                 corpus: AbstractCorpus,
                  parameter: WordToVecParameter):
         """
         Constructor for the NeuralNetwork class. Gets corpus and network parameters as input and sets the
@@ -50,6 +50,9 @@ class NeuralNetwork:
                                      seed=parameter.getSeed())
         self.__word_vector_update = Matrix(self.__vocabulary.size(), self.__parameter.getLayerSize())
         self.__prepareExpTable()
+
+    def vocabularySize(self) -> int:
+        return self.__vocabulary.size()
 
     def __prepareExpTable(self):
         """
@@ -115,7 +118,7 @@ class NeuralNetwork:
         """
         iteration = Iteration(self.__corpus, self.__parameter)
         self.__corpus.open()
-        current_sentence = self.__corpus.getSentence()
+        current_sentence = self.__corpus.getNextSentence()
         outputs = Vector()
         outputs.initAllSame(self.__parameter.getLayerSize(), 0.0)
         output_update = Vector()
@@ -179,16 +182,13 @@ class NeuralNetwork:
         """
         iteration = Iteration(self.__corpus, self.__parameter)
         self.__corpus.open()
-        current_sentence = self.__corpus.getSentence()
-        outputs = Vector()
-        outputs.initAllSame(self.__parameter.getLayerSize(), 0.0)
+        current_sentence = self.__corpus.getNextSentence()
         output_update = Vector()
         output_update.initAllSame(self.__parameter.getLayerSize(), 0)
         while iteration.getIterationCount() < self.__parameter.getNumberOfIterations():
             iteration.alphaUpdate(self.__vocabulary.getTotalNumberOfWords())
             word_index = self.__vocabulary.getPosition(current_sentence.getWord(iteration.getSentencePosition()))
             current_word = self.__vocabulary.getWord(word_index)
-            outputs.clear()
             output_update.clear()
             b = randrange(self.__parameter.getWindow())
             for a in range(b, self.__parameter.getWindow() * 2 + 1 - b):
