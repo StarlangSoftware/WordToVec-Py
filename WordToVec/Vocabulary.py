@@ -78,6 +78,10 @@ class Vocabulary:
         return self.__word_map[word.getName()]
 
     def getTotalNumberOfWords(self) -> int:
+        """
+        Accessor for the total number of words
+        :return: Total number of words
+        """
         return self.__total_number_of_words
 
     def getWord(self, index: int) -> VocabularyWord:

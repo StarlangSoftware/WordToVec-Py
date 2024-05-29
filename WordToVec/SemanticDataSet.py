@@ -13,6 +13,10 @@ class SemanticDataSet:
     __pairs: list[WordPair]
 
     def __init__(self, file_name: str = None):
+        """
+        Constructor for the semantic dataset. Reads word pairs and their similarity scores from an input file.
+        :param file_name: Input file that stores the word pair and similarity scores.
+        """
         self.__pairs = []
         if file_name is not None:
             file = open(file_name, "r")
@@ -23,6 +27,12 @@ class SemanticDataSet:
                 self.__pairs.append(WordPair(items[0], items[1], float(items[2])))
 
     def calculateSimilarities(self, dictionary: VectorizedDictionary) -> SemanticDataSet:
+        """
+        Calculates the similarities between words in the dataset. The word vectors will be taken from the input
+        vectorized dictionary.
+        :param dictionary: Vectorized dictionary that stores the word vectors.
+        :return: Word pairs and their calculated similarities stored as a semantic dataset.
+        """
         result = SemanticDataSet()
         i = 0
         while i < len(self.__pairs):
@@ -41,6 +51,10 @@ class SemanticDataSet:
         return result
 
     def size(self) -> int:
+        """
+        Returns the size of the semantic dataset.
+        :return: Size of the semantic dataset.
+        """
         return len(self.__pairs)
 
     @staticmethod
@@ -53,15 +67,29 @@ class SemanticDataSet:
             return 0
 
     def sort(self):
+        """
+        Sorts the word pairs in the dataset according to the WordPairComparator.
+        """
         self.__pairs.sort(key=cmp_to_key(self.wordPairComparator))
 
     def index(self, wordPair: WordPair):
+        """
+        Finds and returns the index of a word pair in the pairs array list. If there is no such word pair, it
+        returns -1.
+        :param wordPair: Word pair to search in the semantic dataset.
+        :return: Index of the given word pair in the pairs array list. If it does not exist, the method returns -1.
+        """
         for i in range(len(self.__pairs)):
             if wordPair == self.__pairs[i]:
                 return i
         return -1
 
     def spearmanCorrelation(self, semanticDataSet: SemanticDataSet) -> float:
+        """
+        Calculates the Spearman correlation coefficient with this dataset to the given semantic dataset.
+        :param semanticDataSet: Given semantic dataset with which Spearman correlation coefficient is calculated.
+        :return: Spearman correlation coefficient with the given semantic dataset.
+        """
         total = 0
         self.sort()
         semanticDataSet.sort()
