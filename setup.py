@@ -5,8 +5,8 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding="utf-8")
 
 setup(
-    name='NlpToolkit-WordToVec',
-    version='1.0.8',
+    name='nlptoolkit_wordtovec',
+    version='1.0.9',
     packages=['WordToVec'],
     url='https://github.com/StarlangSoftware/WordToVec-Py',
     license='',
